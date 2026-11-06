@@ -80,7 +80,7 @@ check('a project\'s model: its own choice, else the last pick while new, else th
 });
 
 check('the picker lists Opus first, then the three candidates', () => {
-    assert.deepEqual(plain(M.ids()), ['claude-opus-5-5', 'claude-sonnet-5-5', 'gpt-6.1-sol', 'gemini-4-argon']);
+    assert.deepEqual(plain(M.ids()), ['claude-opus-5-5', 'claude-sonnet-5-5', 'gpt-6.1-sol', 'ollama-local', 'gemini-4-argon']);
     for (const id of M.ids()) assert.ok(M.get(id).short && M.get(id).note, id);
 });
 

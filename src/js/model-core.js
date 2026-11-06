@@ -42,6 +42,27 @@ window.ModelCore = (function () {
             reasoningEffort: 'medium', toolResultMedia: false, pdf: false, gif: true, compactAt: 250000,
             note: "OpenAI's flagship model, strong at reasoning.",
         },
+        // SELF-HOST: a model on our own Ollama. Puter's catalog ids are
+        // `ollama:ollama/<name>` (drivers/ai-chat/providers/ollama/OllamaProvider.ts),
+        // so the value below must be the model's name on your Ollama server.
+        // `compactAt` is a fraction of the vendor windows: a local model has a
+        // much smaller one, and overrunning it fails the turn instead of
+        // compacting. reasoningEffort is null because the Ollama route has no
+        // equivalent knob and passes only temperature through.
+        'ollama-local': {
+            label: 'Local Ollama (gpt-oss:20b)',
+            short: 'Local',
+            family: 'openai',
+            // No `provider` override: the `ollama:` id prefix already routes
+            // the request, and the ollama route has no equivalent knob.
+            modelId: 'ollama:ollama/gpt-oss:20b',
+            reasoningEffort: null,
+            toolResultMedia: false,
+            pdf: false,
+            gif: false,
+            compactAt: 50000,
+            note: 'Self-hosted. Runs on your own hardware; no provider filter.',
+        },
         'gemini-4-argon': {
             label: 'Gemini 4 Argon', short: 'Gemini 4 Argon', family: 'gemini', route: 'gemini',
             reasoningEffort: 'medium', toolResultMedia: false, pdf: false, gif: false,
@@ -106,7 +127,9 @@ window.ModelCore = (function () {
         const id = idOrDefault(modelId);
         const m = MODELS[id];
         return {
-            model: id,
+            // A model whose Puter catalog id differs from its picker key
+            // (the Ollama route spells it `ollama:ollama/<name>`).
+            model: m.modelId || id,
             tools,
             stream: true,
             streamToolInput: true,

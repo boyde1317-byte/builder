@@ -132,7 +132,7 @@ await check('free plan: the panel lists every model, others locked, with an upgr
     const html = t.button.panel;
     assert.ok(html, 'panel opened');
     for (const name of ['Claude Opus 5.5', 'Claude Sonnet 5.5', 'GPT-6.1 Sol', 'Gemini 4 Argon']) assert.ok(html.includes(name), name);
-    assert.equal((html.match(/class="model-panel-option[^"]*locked/g) || []).length, 3);
+    assert.equal((html.match(/class="model-panel-option[^"]*locked/g) || []).length, 4);
     assert.ok(html.includes('Unlock every model with a paid Puter plan.'));
     assert.ok(html.includes('model-panel-upgrade'));
     assert.deepEqual(t.calls.track.map((x) => x.name), ['Model Picker Opened']);

@@ -103,6 +103,10 @@
          highlight theme / Google Fonts CSS are vendored locally and bundled by
          Vite — see src/vendor/ and vite.config.js. puter.js is the one
          deliberate exception and stays on its CDN. -->
+    <!-- SELF-HOST: point the SDK at your own Puter API. The SDK reads
+         globalThis.PUTER_API_ORIGIN before its built-in default
+         (src/puter-js/src/index.js, defaultAPIOrigin getter). -->
+    <script>window.PUTER_API_ORIGIN = 'https://api.puter.example.com';</script>
     <script src="https://js.puter.com/v2/"></script>
     <!-- Publishes window.loadCodeEditor only. CodeMirror itself is a separate
          chunk fetched the first time the Code view opens (see editor/entry.mjs).

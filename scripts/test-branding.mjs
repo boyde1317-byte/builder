@@ -110,10 +110,12 @@ check('upgrading from the editor offers to start editing', uiSrc.includes('upgra
 check('Project Published carries branding', /'Project Published', \{[^}]*branding/.test(uiSrc));
 check('usage-limit upgrade button is tracked', uiSrc.includes("'Upgrade Clicked', { source: 'usage_limit' }"));
 
-// A free user asking the AI to drop the badge gets the upgrade offer, not an edit.
+// SELF-HOST FORK: the badge rule is gone from the prompt, so a request to drop
+// it never reaches the upgrade tool. The tool itself stays for the other perks.
 const promptSrc = read('../src/js/prompt.js');
 const upgradeToolSrc = read('../src/tools/chat_ui/upgrade.js');
-check('prompt routes badge-removal requests to OfferUpgrade', promptSrc.includes('Call the OfferUpgrade tool instead'));
+check('prompt no longer routes badge-removal requests to OfferUpgrade', !promptSrc.includes('Call the OfferUpgrade tool instead'));
+check('prompt no longer describes the badge to the model', !/Made with Puter/i.test(promptSrc));
 check('OfferUpgrade tool is defined and bundled',
     upgradeToolSrc.includes('name: "OfferUpgrade"') && viteSrc.includes("'tools/chat_ui/upgrade.js'"));
 check('a reloaded chat re-renders the upgrade card', read('../src/js/app.js').includes('toolResponse.__upgrade_offer'));
